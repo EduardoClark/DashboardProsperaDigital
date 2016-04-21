@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+  <!-- template.html -->
+<html>
+<head>
+  <!-- Site required Polymer components -->
+<script src="http://datos.gob.mx/bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+<link rel="shortcut icon" href="http://datos.gob.mx/assets/img/favicon.ico">
+<link rel="import" href="http://datos.gob.mx/bower_components/polymer/polymer.html">
+<link rel="import" href="http://datos.gob.mx/bower_components/dgm-navbar/dgm-navbar.html">
+<link rel="import" href="http://datos.gob.mx/bower_components/dgm-footer/dgm-footer.html">
+<!-- Used libraries -->
+<link rel="stylesheet" href="http://datos.gob.mx/bower_components/bootstrap/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="http://datos.gob.mx//css/main.css">
+<link rel="canonical" href="http://datos.gob.mx//">
+<link rel="alternate" type="application/rss+xml" title="Guía de Datos Abiertos para México" href="http://datos.gob.mx//feed.xml" />
+<title>Prospera Digital</title>
+{{ headContent() }}
+<style> #topnav > .navbar-default { background-color:#00cc99;margin-bottom:0px;border-color:#00cc99; }</style>
+<style> .col-sm-4, .well { background-color:#ffffff;margin-bottom:0px;border-color:#ffffff;margin-top:0px }</style>
+<style> li.active { background-color:#00cc99;font-weight:bold; }</style>
+<style> .navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:focus, .navbar-default .navbar-nav>.active>a:hover { background-color:#00cc99;font-weight:bold; }</style>
+<style> .nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover,.nav-pills>li>a:hover { background-color:#ffffff;color:#00cc99;margin-top:-20px; }</style>
+<style>.nav-pills>li>a {border-radius: 0px;margin-top:-20px;}</style>
+<style>a {color: grey;}</style>
+<style>.nav-stacked>li+li { margin-top: -40px;margin-left: 0}</style>
+<style> hr { padding: 10px;margin: 5px; width:55%;height:2px;color:black;</style>
+<style> #catselector > .navbar { background-color:#ffffff;border-color:#ffffff;margin-top:50px;margin-bottom:-35px; }</style>
+<!--<style>.nav > li > a {padding-right:115px;}</style>-->
+<style> svg.leaflet-zoom-animated { background-color:#E7E3E3; }</style>
+<style>.leaflet-container .leaflet-control-attribution {margin: 0px;background-color: #E7E3E3;}</style>
+<style>.leaflet-container a {color: #E7E3E3;}</style>
+<style>#mapaprueba[style] {margin-top: -50px;margin-bottom: -50px;padding-bottom: 0px;padding-top: 0px;height:700px !important;}</style>
+<style>.marker-cluster-small[style] , .marker-cluster-medium[style], .marker-cluster-large[style] {background-color:#409b31 !important;color:white ;}</style>
+<style>.marker-cluster-small > div , .marker-cluster-medium  > div, .marker-cluster-large > div {background-color:#409b31 !important;color:white ;}</style>
+<style>path[stroke*="#0033ff"] {stroke:white;fill:white;}</style>
+<style>.leaflet-popup-content > span {font-weight:bold;}</style>
+<style>.leaflet-popup[style] {bottom:20px !important;}</style>
+<style>.leaflet-popup-tip {width:0px;height:0px;}</style>
+<style>.leaflet-popup-content-wrapper {border-radius:0px}</style>
+<style>.leaflet-popup {border: 2px solid white; background-clip: content-box; padding: 5px 5px 0px;}</style>
+<style>.leaflet-popup-content-wrapper {margin-bottom: -15px;}</style>
+<style> .column-left { float: left; width: 33%; }</style>
+<style> .column-right { float: right; width: 33%; }</style>
+<style> .column-center { display: inline-block; width: 33%; }</style>
+<style>#mapaprueba[style] {margin-top: -50px;margin-bottom: -50px;padding-bottom: 0px;padding-top: 0px;height:700px !important;}</style>
+<script>
+$(document).ready(function(){
+    $("#nivel > li:nth-child(3) > a:nth-child(1)").click(function(){
+        $("div.jumbotron:nth-child(3)").hide(500);
+    });
+    $("#nivel > li:nth-child(2) > a:nth-child(1)").click(function(){
+        $("div.jumbotron:nth-child(3)").show(500);
+    });
+});
+</script>
+<script>
+$(document).ready(function(){
+    $("#nivel > li:nth-child(3) > a:nth-child(1)").click(function(){
+        $("div.jumbotron:nth-child(4)").hide(500);
+    });
+    $("#nivel > li:nth-child(2) > a:nth-child(1)").click(function(){
+        $("div.jumbotron:nth-child(4)").show(500);
+    });
+});
+</script>
+<script>
+$(document).ready(function(){
+    $("#nivel > li:nth-child(3) > a:nth-child(1)").click(function(){
+        $("div.jumbotron:nth-child(3)").hide(500);
+    });
+    $("#nivel > li:nth-child(1) > a:nth-child(1)").click(function(){
+        $("div.jumbotron:nth-child(3)").show(500);
+    });
+});
+</script>
+<script>
+$(document).ready(function(){
+    $("#nivel > li:nth-child(3) > a:nth-child(1)").click(function(){
+        $("div.jumbotron:nth-child(4)").hide(500);
+    });
+    $("#nivel > li:nth-child(1) > a:nth-child(1)").click(function(){
+        $("div.jumbotron:nth-child(4)").show(500);
+    });
+});
+</script>
+
+
+
+
+</head>
+<body>
+
+<body onload='f1();'>
+  
+<dgm-navbar></dgm-navbar>
+
+<div id="topnav">
+{{ navbar }}
+</div>
+
+
+<div class="jumbotron" style="margin-bottom: 0px;
+    background-image: url(/DashboardProspera/assets/cover.jpg);
+    background-position: 0% 25%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    color: white;" >
+<div class="container">
+<h1 style="font-weight: bold;">&nbsp;Prospera Digital</h1> 
+<br><br><br><br><br><br><br><br>
+<img src="/DashboardProspera/assets/logo.svg" style="height:20%;width:20%;">
+</div>
+</div>
+
+<div class="jumbotron" style="margin-bottom: 0px;background-color:#ffffff;padding: 0px;height:500px;">
+<br><br>
+<div class="container" id="categorymenu" style="background-color:#ffffff">
+<div id="catselector" class="dropdown" style='padding-top:20px;padding-left:40px;'>
+<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" style="background-color:#00cc99;color:white;border-radius:0;padding: 6px 110px 5px 10px;text-align:left;text-transform: capitalize;font-weight:bold;">Nacional
+<span class="caret"></span></button>
+<ul class="dropdown-menu">
+<li><a href="#">Nacional</a></li>
+<li class="divider"></li>
+<li><a href="#">Guanajuato</a></li>
+<li><a href="#">Hidalgo</a></li>
+<li><a href="#">Puebla</a></li>
+<li><a href="#">Estado de México</a></li>
+<li><a href="#">Chiapas</a></li>
+<li class="divider"></li>
+<li><a href="#">Unidad Médica</a></li>
+</ul>
+</div>
+{{ navlist }}
+</div>
+</div>
+
+<div id="mapa" class="jumbotron" style="margin-bottom: -30px;background-color:#E7E3E3;margin-top:0px">
+{{ mymap }}
+</div>
+
+
+
+
+<dgm-footer></dgm-footer>
+
+</body>
+</html>
+
+
+
+  
