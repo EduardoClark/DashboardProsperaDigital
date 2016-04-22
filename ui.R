@@ -2,6 +2,9 @@ library(shiny)
 library(leaflet)
 library(rgdal)
 library(dygraphs)
+library(htmltools)
+library(R.utils)
+
 
 ## ui.R ##
 htmlTemplate("template.html",
