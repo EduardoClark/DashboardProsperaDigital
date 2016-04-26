@@ -7,6 +7,12 @@ library(R.utils)
 
 
 ## ui.R ##
+span_hr_template <- function(legend){
+  span_ <- "<span style='color:#00cc99;'>&#x25CF;</span> %s<hr>"
+  html_code <- sprintf(span_,legend)
+  return(html_code)
+}
+
 htmlTemplate("template.html",
   button = actionButton("action", "Action"),
   slider = sliderInput("x", "X", 1, 100, 21),
@@ -15,16 +21,16 @@ htmlTemplate("template.html",
                               tabPanel("Estatal"),
                               tabPanel("Unidad Médica")),
   navlist = navlistPanel(id="categorias",
-   tabPanel(HTML("<span style='color:#00cc99;'>&#x25CF;</span> Resumen<hr>"),htmlOutput("caption")),
-    tabPanel(HTML("<span style='color:#00cc99;'>&#x25CF;</span> Clinicas<hr>"), htmlOutput("clinicas")),
-    tabPanel(HTML("<span style='color:#00cc99;'>&#x25CF;</span> Usuarios<hr>"), htmlOutput("usuarios")),
-    tabPanel(HTML("<span style='color:#00cc99;'>&#x25CF;</span> Desertores<hr>")),
-    tabPanel(HTML("<span style='color:#00cc99;'>&#x25CF;</span> Total de Mensajes<hr>")),
-    tabPanel(HTML("<span style='color:#00cc99;'>&#x25CF;</span> Total de Mensajes por canal<hr>")),
-    tabPanel(HTML("<span style='color:#00cc99;'>&#x25CF;</span> Campañas<hr>")),
-    tabPanel(HTML("<span style='color:#00cc99;'>&#x25CF;</span> Tasa de error por pregunta<hr>")),
-    tabPanel(HTML("<span style='color:#00cc99;'>&#x25CF;</span> MIALARMA<hr>")),
-    tabPanel(HTML("<span style='color:#00cc99;'>&#x25CF;</span> MICITA<hr>"))
+   tabPanel(HTML(span_hr_template('Resumen')),htmlOutput("resumen")),
+    tabPanel(HTML(span_hr_template('Clinicas')), htmlOutput("clinicas")),
+    tabPanel(HTML(span_hr_template('Usuarios')), htmlOutput("usuarios")),
+    tabPanel(HTML(span_hr_template('Desertores'))),
+    tabPanel(HTML(span_hr_template('Total de Mensajes'))),
+    tabPanel(HTML(span_hr_template('Total de Mensajes por canal'))),
+    tabPanel(HTML(span_hr_template('Campañas'))),
+    tabPanel(HTML(span_hr_template('Tasa de error por pregunta'))),
+    tabPanel(HTML(span_hr_template('MIALARMA'))),
+    tabPanel(HTML(span_hr_template('MICITA')))
   ),
   
   navbar2 = navbarPage(tabPanel(HTML("&nbsp;&nbsp;Nacion")),
