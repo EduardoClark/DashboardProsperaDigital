@@ -25,17 +25,17 @@ template_resumen <- function(arg_list){
         style=span_style ,
         Estados
       ),
-      tags$br("Estados",tags$br(),tags$br(),tags$br()),
+      tags$br("Estados",tags$br(),tags$br()),
       tags$span(
         style=span_style ,
         Usuarios
       ),
-      tags$br("Usuarios",tags$br(),tags$br(),tags$br()),
+      tags$br("Usuarios",tags$br(),tags$br()),
       tags$span(
         style=span_style ,
         Mensajes
       ),
-      tags$br("Mensajes",tags$br(),tags$br(),tags$br()),
+      tags$br("Mensajes",tags$br(),tags$br()),
       tags$span(
         style=span_style ,
         CasosMIALERTA
@@ -49,17 +49,17 @@ template_resumen <- function(arg_list){
         style=span_style ,
         Municipios
       ),
-      tags$br("Municipios",tags$br(),tags$br(),tags$br()),
+      tags$br("Municipios",tags$br(),tags$br()),
       tags$span(
         style=span_style ,
         Beneficiarias
       ),
-      tags$br("Beneficiarias",tags$br(),tags$br(),tags$br()),
+      tags$br("Beneficiarias",tags$br(),tags$br()),
       tags$span(
         style=span_style ,
         Enviados
       ),
-      tags$br("Enviados",tags$br(),tags$br(),tags$br()),
+      tags$br("Enviados",tags$br(),tags$br()),
       tags$span(
         style=span_style ,
         CambiosMICITA
@@ -73,17 +73,17 @@ template_resumen <- function(arg_list){
         style=span_style ,
         UnidadesMedicas
       ),
-      tags$br("Unidades Médicas",tags$br(),tags$br(),tags$br()),
+      tags$br("Unidades Médicas",tags$br(),tags$br()),
       tags$span(
         style=span_style ,
         Personal
       ),
-      tags$br("Personal",tags$br(),tags$br(),tags$br()),
+      tags$br("Personal",tags$br(),tags$br()),
       tags$span(
         style=span_style ,
         Recibidos
       ),
-      tags$br("Recibidos",tags$br(),tags$br(),tags$br()),
+      tags$br("Recibidos",tags$br(),tags$br()),
       tags$span(
         style=span_style ,
         Tasadeerror
@@ -113,12 +113,12 @@ template_clinicas <- function(arg_list){
         style=span_style ,
         Numerodeclinicastotal
       ),
-      tags$br("Número de clínicas total",tags$br(),tags$br(),tags$br()),
+      tags$br("Número de clínicas total",tags$br(),tags$br()),
       tags$span(
         style=span_style ,
         Numerodeclinicasincorporadas
       ),
-      tags$br("Número de clínicas incorporadas",tags$br(),tags$br(),tags$br()),
+      tags$br("Número de clínicas incorporadas",tags$br(),tags$br()),
       tags$span(
         style=span_style ,
         Porcentajedeclinicasyaincorporado
@@ -152,15 +152,15 @@ template_usuarios <- function(arg_list){
       tags$span(
         style=span_style ,
         Usuariastotales),
-      tags$br("Usuarias totales",tags$br(),tags$br(),tags$br()),
+      tags$br("Usuarias totales",tags$br(),tags$br()),
       tags$span(
         style=span_style ,
         BeneficiariasProspera),
-      tags$br("Beneficiarias Prospera",tags$br(),tags$br(),tags$br()),
+      tags$br("Beneficiarias Prospera",tags$br(),tags$br()),
       tags$span(
         style=span_style ,
         Poblacionabierta),
-      tags$br("Población abierta",tags$br(),tags$br(),tags$br())
+      tags$br("Población abierta")
     ),
     tags$div(
       class = "column-center", 
@@ -168,15 +168,15 @@ template_usuarios <- function(arg_list){
       tags$span(
         style=span_style ,
         Conbebetotal),
-      tags$br("Con bebé (total)",tags$br(),tags$br(),tags$br()),
+      tags$br("Con bebé (total)",tags$br(),tags$br()),
       tags$span(
         style=span_style ,
         ConbebeProspera),
-      tags$br("Con bebé (Prospera)",tags$br(),tags$br(),tags$br()),
+      tags$br("Con bebé (Prospera)",tags$br(),tags$br()),
       tags$span(
         style=span_style ,
         ConbebeAbierto),
-      tags$br("Con bebé (Abierto)",tags$br(),tags$br(),tags$br())
+      tags$br("Con bebé (Abierto)")
     ),
     tags$div(
       class = "column-right", 
@@ -184,15 +184,15 @@ template_usuarios <- function(arg_list){
       tags$span(
         style=span_style ,
         Auxiliares),
-      tags$br("Auxiliares",tags$br(),tags$br(),tags$br()),
+      tags$br("Auxiliares",tags$br(),tags$br()),
       tags$span(
         style=span_style ,
         Vocales),
-      tags$br("Vocales",tags$br(),tags$br(),tags$br()),
+      tags$br("Vocales",tags$br(),tags$br()),
       tags$span(
         style=span_style ,
         Responsables),
-      tags$br("Responsables",tags$br(),tags$br(),tags$br())
+      tags$br("Responsables")
     )
   )
   
