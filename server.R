@@ -18,7 +18,9 @@ source("./template_html.R")
 states <- readOGR(dsn="./data",layer = "prueba", verbose = T)
 states@data$Color <- ifelse(states@data$PD==1,"#00cc99","#0C5F4A")
 UM <- read.csv("./data/ec_muestra_20160203.csv",stringsAsFactors = FALSE, fileEncoding = "Windows-1252") %>% subset(cl_treatmentArm!=0) 
-MSJ <- read.csv("./data/mensajes_pd_rp.csv")
+MSJ <- read.csv("./data/messages.csv")
+CTC <- read.csv("./data/contacts.csv")
+RNS <- read.csv("./data/runs.csv", header=T)
 names(UM)[21:22] <- c("lon","lat")
 HUIcon <- makeIcon(
   iconUrl = "http://104.236.151.123:3838/DashboardProspera/assets/icono-unidad.svg",
@@ -69,17 +71,21 @@ shinyServer(function(input, output) {
   output$resumen <- renderUI({
     if(input$nivel=="Nacional"){
       args <- list(  Estados = nrow(table(UM$cl_ent_clave_clCat)),
-                     Usuarios = prettyNum(4323,big.mark=",",scientific=FALSE),
+                     Usuarios = prettyNum(nrow(CTC),big.mark=",",scientific=FALSE),
                      Mensajes = prettyNum(nrow(MSJ),big.mark=",",scientific=FALSE),
-                     CasosMIALERTA = prettyNum(92,big.mark=",",scientific=FALSE),
+                     CasosMIALERTA = prettyNum(length(unique(RNS[
+                       RNS[,"flow_name"]=="miAlerta" 
+                       & RNS[,"completed"]=="True",
+                      "contact"] ) )
+                      ,big.mark=",",scientific=FALSE),
                      Municipios = nrow(table(UM$cl_mun_clave_clCat)),
-                     Beneficiarias = prettyNum(3987,big.mark=",",scientific=FALSE),
+                     Beneficiarias = prettyNum(nrow(CTC),big.mark=",",scientific=FALSE),
                      Enviados = prettyNum(nrow(MSJ[MSJ$direction=='O',]),big.mark=",",scientific=FALSE),
-                     CambiosMICITA = prettyNum( 12345,big.mark=",",scientific=FALSE),
+                     CambiosMICITA = prettyNum(0,big.mark=",",scientific=FALSE),
                      UnidadesMedicas = nrow(UM),
                      Personal = prettyNum(336,big.mark=",",scientific=FALSE),
                      Recibidos = prettyNum(nrow(MSJ[MSJ$direction=='I',]),big.mark=",",scientific=FALSE),
-                     Tasadeerror = "8%"
+                     Tasadeerror = sprintf("%i%%",floor(100*sum(RNS[,"completed"]=="False")/nrow(RNS)))
       )
       template_resumen(args)
       } 
