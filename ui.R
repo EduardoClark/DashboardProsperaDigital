@@ -1,10 +1,4 @@
-library(shiny)
-library(leaflet)
-library(rgdal)
-library(dygraphs)
-library(htmltools)
-library(R.utils)
-
+source("AuxScripts/loadLibraries.R")
 
 ## ui.R ##
 span_hr_template <- function(legend){
@@ -15,7 +9,7 @@ span_hr_template <- function(legend){
 
 htmlTemplate("template.html",
   button = actionButton("action", "Action"),
-  slider = sliderInput("x", "X", 1, 100, 21),
+  slider = sliderInput("x", "X", 1, 100, 20),
   navbar = navbarPage(id="nivel",tabPanel("Nacional"),
                               tabPanel("Nacional"),
                               tabPanel("Estatal"),
@@ -43,13 +37,7 @@ htmlTemplate("template.html",
   
   mymap = leafletOutput("mapaprueba")
   
-  # ,timeseries = dygraphOutput("timeline")
-  
-
-  
  
-  
-  
   
 )
 
