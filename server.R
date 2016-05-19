@@ -13,14 +13,19 @@ library(xts)
 library(dygraphs)
 
 source("./template_html.R")
+source("./aux.R")
+
 
 ###Clinic Level Map
 states <- readOGR(dsn="./data",layer = "prueba", verbose = T)
 states@data$Color <- ifelse(states@data$PD==1,"#00cc99","#0C5F4A")
 UM <- read.csv("./data/ec_muestra_20160203.csv",stringsAsFactors = FALSE, fileEncoding = "Windows-1252") %>% subset(cl_treatmentArm!=0) 
 MSJ <- read.csv("./data/messages.csv")
-CTC <- read.csv("./data/contacts.csv")
-RNS <- read.csv("./data/runs.csv", header=T)
+CTC <- read.csv("./data/contacts.csv",stringsAsFactors=F,header=T)
+RNS <- read.csv("./data/runs.csv",,stringsAsFactors=F, header=T)
+CLUES <- read.csv("./data/CAT_CLUES_Febrero2016.csv",stringsAsFactors=F,header=T)
+CLUES <- CLUES[,c('CLUES','CLAVE.ENTIDAD','CLAVE.MUNICIPIO')]
+CLUES$mun <- paste(CLUES$CLAVE.ENTIDAD, CLUES$CLAVE.MUNICIPIO, sep="_")
 names(UM)[21:22] <- c("lon","lat")
 HUIcon <- makeIcon(
   iconUrl = "http://104.236.151.123:3838/DashboardProspera/assets/icono-unidad.svg",
@@ -61,6 +66,18 @@ TimeData$Acc <- NULL
 
 
 ########################################################################################################
+pre_pars <- c(
+  'Beneficiarias' = sum(apply(CTC[,grepl('groups', colnames(CTC))] ,1 ,test_prospera)),
+  'UnidadesMedicas' = length(get_unique_clues(CTC)[,1]),
+  'Personal' = length(get_unique_clues(CTC)[,1]),
+  'Estados' = length(get_unique_states(CTC)),
+  'Municipios' = length(unique(CLUES[CLUES$CLUES%in%get_unique_clues(CTC)[,1],'mun'])),
+  'CasosMIALERTA' = length(unique(RNS[
+    RNS[,"flow_name"]=="miAlerta" & RNS[,"completed"]=="True","contact"] )),
+  'CambiosMICITA' = length(unique(RNS[
+    grepl("miCita_bf",RNS[,"flow_name"]) & RNS[,"completed"]=="True","contact"] ))
+)
+
 shinyServer(function(input, output) {
   
   output$mapaprueba <- renderLeaflet({
@@ -70,20 +87,16 @@ shinyServer(function(input, output) {
   
   output$resumen <- renderUI({
     if(input$nivel=="Nacional"){
-      args <- list(  Estados = nrow(table(UM$cl_ent_clave_clCat)),
+      args <- list(  Estados = prettyNum(pre_pars['Estados']),
                      Usuarios = prettyNum(nrow(CTC),big.mark=",",scientific=FALSE),
                      Mensajes = prettyNum(nrow(MSJ),big.mark=",",scientific=FALSE),
-                     CasosMIALERTA = prettyNum(length(unique(RNS[
-                       RNS[,"flow_name"]=="miAlerta" 
-                       & RNS[,"completed"]=="True",
-                      "contact"] ) )
-                      ,big.mark=",",scientific=FALSE),
-                     Municipios = nrow(table(UM$cl_mun_clave_clCat)),
-                     Beneficiarias = prettyNum(nrow(CTC),big.mark=",",scientific=FALSE),
+                     CasosMIALERTA = prettyNum(pre_pars['CasosMIALERTA'],big.mark=",",scientific=FALSE),
+                     Municipios = pre_pars['Municipios'],#nrow(table(UM$cl_mun_clave_clCat)),
+                     Beneficiarias = prettyNum(pre_pars['Beneficiarias'],big.mark=",",scientific=FALSE),
                      Enviados = prettyNum(nrow(MSJ[MSJ$direction=='O',]),big.mark=",",scientific=FALSE),
-                     CambiosMICITA = prettyNum(0,big.mark=",",scientific=FALSE),
-                     UnidadesMedicas = nrow(UM),
-                     Personal = prettyNum(336,big.mark=",",scientific=FALSE),
+                     CambiosMICITA = prettyNum(pre_pars['CambiosMICITA'],big.mark=",",scientific=FALSE),
+                     UnidadesMedicas = prettyNum(nrow(UM)),
+                     Personal = prettyNum(pre_pars['Personal'],big.mark=",",scientific=FALSE),
                      Recibidos = prettyNum(nrow(MSJ[MSJ$direction=='I',]),big.mark=",",scientific=FALSE),
                      Tasadeerror = sprintf("%i%%",floor(100*sum(RNS[,"completed"]=="False")/nrow(RNS)))
       )
@@ -112,9 +125,9 @@ shinyServer(function(input, output) {
   output$clinicas <- renderUI({
     if(input$nivel=="Nacional"){
       arg_list <- list( 
-        Numerodeclinicastotal = nrow(UM),
-        Numerodeclinicasincorporadas = prettyNum( round(nrow(UM)*.27,0),big.mark=",",scientific=FALSE),
-        Porcentajedeclinicasyaincorporado = paste(round((nrow(UM)*.27)/nrow(UM) * 100,1),"%",sep="")
+        Numerodeclinicastotal = prettyNum(nrow(UM)),
+        Numerodeclinicasincorporadas = prettyNum( pre_pars['UnidadesMedicas'],big.mark=",",scientific=FALSE),
+        Porcentajedeclinicasyaincorporado = paste(round(pre_pars['UnidadesMedicas']/nrow(UM) * 100,1),"%",sep="")
       )
       template_clinicas(arg_list)
       } 
@@ -133,15 +146,15 @@ shinyServer(function(input, output) {
   output$usuarios <- renderUI({
     if(input$nivel=="Nacional"){
       args <- list(
-        Usuariastotales = prettyNum(1235,big.mark=",",scientific=FALSE),
-        BeneficiariasProspera = prettyNum(1190,big.mark=",",scientific=FALSE),
-        Poblacionabierta = prettyNum(45,big.mark=",",scientific=FALSE),
-        Conbebetotal = "23%",
-        ConbebeProspera = "27%",
-        ConbebeAbierto = "21%",
-        Auxiliares = "45",
-        Vocales = "22",
-        Responsables = "125"
+        Usuariastotales = prettyNum(nrow(CTC),big.mark=",",scientific=FALSE),
+        BeneficiariasProspera = prettyNum(pre_pars['Beneficiarias'],big.mark=",",scientific=FALSE),
+        Poblacionabierta = prettyNum(nrow(CTC)-pre_pars['Beneficiarias'],big.mark=",",scientific=FALSE),
+        Conbebetotal = sprintf("%i%%",floor(100*get_conbebe(CTC,prospera=FALSE)/nrow(CTC))),
+        ConbebeProspera = sprintf("%i%%",floor(100*get_conbebe(CTC,prospera=TRUE)/pre_pars['Beneficiarias'])),
+        ConbebeAbierto = sprintf("%i%%",floor(100*(get_conbebe(CTC,prospera=FALSE)-get_conbebe(CTC,prospera=TRUE))/(nrow(CTC)-pre_pars['Beneficiarias']))),
+        Auxiliares = get_aux(CTC),
+        Vocales = get_vocal(CTC),
+        Responsables = prettyNum(pre_pars['UnidadesMedicas'])
       )
       template_usuarios(args)
     } 
