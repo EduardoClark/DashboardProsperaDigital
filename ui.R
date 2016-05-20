@@ -9,7 +9,7 @@ span_hr_template <- function(legend){
 
 htmlTemplate("template.html",
   button = actionButton("action", "Action"),
-  slider = sliderInput("x", "X", 1, 100, 20),
+  slider = sliderInput("x", "X", 1, 100, 21),
   navbar = navbarPage(id="nivel",tabPanel("Nacional"),
                               tabPanel("Nacional"),
                               tabPanel("Estatal"),

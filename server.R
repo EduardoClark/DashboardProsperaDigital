@@ -58,28 +58,7 @@ shinyServer(function(input, output) {
       )
       template_usuarios(args)
   })
-  
-  ##Desertores
-  
-  ##Total de mensajes
-  output$usuarios <- renderUI({
-    args <- list(
-      Usuariastotales = prettyNum(pre_pars['Usuarios'],big.mark=",",scientific=FALSE),
-      BeneficiariasProspera = prettyNum(pre_pars['Beneficiarias'],big.mark=",",scientific=FALSE),
-      Poblacionabierta = prettyNum(pre_pars['PoblacionAbierta'],big.mark=",",scientific=FALSE),
-      Conbebetotal =pre_pars['ConbebeTotal'] ,
-      ConbebeProspera = pre_pars['ConbebeProspera'],
-      ConbebeAbierto = pre_pars['ConbebeAbierto'],
-      Auxiliares = pre_pars['Auxiliares'],
-      Vocales = pre_pars['Vocales'],
-      Responsables = prettyNum(pre_pars['UnidadesMedicas'])
-    )
-    template_usuarios(args)
-  })
-  
-  
-  
-  
+
   
 })
 
