@@ -88,14 +88,13 @@ template_resumen <- function(arg_list){
         style=span_style ,
         Tasadeerror
       ),
-      tags$br("Tasa de error")
+      tags$br("Tasa de respuesta")
     )
   )
   
   return(html_)
   
 }
-
 
 template_clinicas <- function(arg_list){
   
@@ -200,6 +199,241 @@ template_usuarios <- function(arg_list){
   
 }
 
+template_mensajes <- function(arg_list){
+  
+  Mensajes <- arg_list$Mensajes
+  MensajesTelcel <- arg_list$MensajesTelcel
+  PromedioMensajes <- arg_list$PromedioMensajes
+  Enviados <- arg_list$Enviados
+  MensajesMovistar <- arg_list$MensajesMovistar
+  PromedioMensajesDia <- arg_list$PromedioMensajesDia
+  Recibidos <- arg_list$Recibidos
+  MensajesOtros <- arg_list$MensajesOtros
+  MensajesUltimaSemana <- arg_list$MensajesUltimaSemana
+  
 
+  html_ <- tags$div(
+    class = "container",
+    style = "margin-top:-10px",
+    tags$div(
+      class = "column-left", 
+      style = "text-align:left;",
+      tags$span(
+        style=span_style ,
+        Mensajes),
+      tags$br("Mensajes Totales",tags$br(),tags$br()),
+      tags$span(
+        style=span_style ,
+        MensajesTelcel),
+      tags$br("Mensajes Telcel",tags$br(),tags$br()),
+      tags$span(
+        style=span_style ,
+        PromedioMensajes),
+      tags$br("Promedio Mensajes por Usuario")
+    ),
+    tags$div(
+      class = "column-center", 
+      style = "text-align:left;",
+      tags$span(
+        style=span_style ,
+        Enviados),
+      tags$br("Mensajes Enviados",tags$br(),tags$br()),
+      tags$span(
+        style=span_style ,
+        MensajesMovistar),
+      tags$br("Mensajes Movistar",tags$br(),tags$br()),
+      tags$span(
+        style=span_style ,
+        PromedioMensajesDia),
+      tags$br("Promedio Mensajes por Dia")
+    ),
+    tags$div(
+      class = "column-right", 
+      style = "text-align:left;",
+      tags$span(
+        style=span_style ,
+        Recibidos),
+      tags$br("Mensajes recibidos",tags$br(),tags$br()),
+      tags$span(
+        style=span_style ,
+        MensajesOtros),
+      tags$br("Mensajes otros canales",tags$br(),tags$br()),
+      tags$span(
+        style=span_style ,
+        MensajesUltimaSemana),
+      tags$br("Mensajes en la ultima semana")
+    )
+  )
+  
+  return(html_)
+  
+}
 
+template_canal <- function(arg_list){
+  
+  Telcel <- arg_list$Telcel
+  UsuariosTelcel <- arg_list$UsuariosTelcel
+  PromedioMensajesTelcel <- arg_list$PromedioMensajesTelcel
+  Movistar <- arg_list$Movistar
+  UsuariosMovistar <- arg_list$UsuariosMovistar
+  PromedioMensajesMovistar <- arg_list$PromedioMensajesMovistar
+  Otroscanales <- arg_list$Otroscanales
+  UsuariosOtroscanales <- arg_list$UsuariosOtroscanales
+  PromedioMensajesOtrosCanales <- arg_list$PromedioMensajesOtrosCanales
+
+  html_ <- tags$div(
+    class = "container",
+    style = "margin-top:-10px",
+    tags$div(
+      class = "column-left", 
+      style = "text-align:left;",
+      tags$span(
+        style=span_style ,
+        Telcel),
+      tags$br("Mensajes Telcel",tags$br(),tags$br()),
+      tags$span(
+        style=span_style ,
+        UsuariosTelcel),
+      tags$br("Usuarios Telcel",tags$br(),tags$br()),
+      tags$span(
+        style=span_style ,
+        PromedioMensajesTelcel),
+      tags$br("Mensajes por usuario Telcel")
+    ),
+    tags$div(
+      class = "column-center", 
+      style = "text-align:left;",
+      tags$span(
+        style=span_style ,
+        Movistar),
+      tags$br("Mensajes Movistar",tags$br(),tags$br()),
+      tags$span(
+        style=span_style ,
+        UsuariosMovistar),
+      tags$br("Usuarios Movistar",tags$br(),tags$br()),
+      tags$span(
+        style=span_style ,
+        PromedioMensajesMovistar),
+      tags$br("Mensajes por usuario Movistar")
+    ),
+    tags$div(
+      class = "column-right", 
+      style = "text-align:left;",
+      tags$span(
+        style=span_style ,
+        Otroscanales),
+      tags$br("Mensajes otros canales",tags$br(),tags$br()),
+      tags$span(
+        style=span_style ,
+        UsuariosOtroscanales),
+      tags$br("Usuarios otros canales",tags$br(),tags$br()),
+      tags$span(
+        style=span_style ,
+        PromedioMensajesOtrosCanales),
+      tags$br("Mensajes por usuario otros canales")
+    )
+  )
+  
+  return(html_)
+  
+}
+
+template_campaign <- function(arg_list){
+  
+  Estados <- arg_list$Estados
+
+  RecordatoriosFlujos = arg_list$ RecordatoriosFlujo
+  RecordatoriosMensajes = arg_list$RecordatoriosMensajes
+  RecordatoriosTasaRespuesta = arg_list$RecordatoriosTasaRespuesta
+  SenalesAlertaFlujos = arg_list$SenalesAlertaFlujos
+  SenalesAlertaMensajes = arg_list$SenalesAlertaMensajes
+  SenalesAlertaTasaRespuesta = arg_list$SenalesAlertaTasaRespuesta
+  PreventAlertaFlujos = arg_list$PreventAlertaFlujos
+  PreventAlertaMensajes = arg_list$PreventAlertaMensajes
+  PreventAlertaTasaRespuesta = arg_list$PreventAlertaTasaRespuesta
+  PlanAlertaFlujos = arg_list$PlanAlertaFlujos
+  PlanAlertaMensajes = arg_list$PlanAlertaMensajes
+  PlanAlertaTasaRespuesta = arg_list$PlanAlertaTasaRespuesta
+  
+  
+  html_ <- tags$div(
+    class = "container",
+    style = "margin-top:-40px",
+    tags$div(
+      class = "column-left", 
+      style = "text-align:left;",
+      tags$span(
+        style=span_style ,
+        RecordatoriosFlujos
+      ),
+      tags$br("Flujos de Recordatorios",tags$br(),tags$br()),
+      tags$span(
+        style=span_style ,
+        SenalesAlertaFlujos
+      ),
+      tags$br("Flujos de Señales de Alerta",tags$br(),tags$br()),
+      tags$span(
+        style=span_style ,
+        PreventAlertaFlujos
+      ),
+      tags$br("Flujos de Prevención",tags$br(),tags$br()),
+      tags$span(
+        style=span_style ,
+        PlanAlertaFlujos
+      ),
+      tags$br("Flujos de planeación")
+    ),
+    tags$div(
+      class = "column-center", 
+      style = "text-align:left;",
+      tags$span(
+        style=span_style ,
+        RecordatoriosMensajes
+      ),
+      tags$br("Mensajes de Recordatorios",tags$br(),tags$br()),
+      tags$span(
+        style=span_style ,
+        SenalesAlertaMensajes
+      ),
+      tags$br("Mensajes de Señales de Alerta",tags$br(),tags$br()),
+      tags$span(
+        style=span_style ,
+        PreventAlertaMensajes
+      ),
+      tags$br("Mensajes de Prevención",tags$br(),tags$br()),
+      tags$span(
+        style=span_style ,
+        PlanAlertaMensajes
+      ),
+      tags$br("Mensajes de Planeación")
+    ),
+    tags$div(
+      class = "column-right", 
+      style = "text-align:left;",
+      tags$span(
+        style=span_style ,
+        RecordatoriosTasaRespuesta
+      ),
+      tags$br("Tasa de respuesta de Recordatorios",tags$br(),tags$br()),
+      tags$span(
+        style=span_style ,
+        SenalesAlertaTasaRespuesta
+      ),
+      tags$br("Tasa de respuesta a Alertas",tags$br(),tags$br()),
+      tags$span(
+        style=span_style ,
+        PreventAlertaTasaRespuesta
+      ),
+      tags$br("Tasa de respuesta de Prevención",tags$br(),tags$br()),
+      tags$span(
+        style=span_style ,
+        PlanAlertaTasaRespuesta
+      ),
+      tags$br("Tasa de respuesta a Planeación")
+    )
+  )
+  
+  return(html_)
+  
+}
 

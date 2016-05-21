@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "getgsheet",
+  "private_key_id": "8b845085ca3e1dc108273ca705112524e314d08e",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCNsRhUKxn+V91V\nRT3wLOalIbjLa16c/9cUVg8Bm0PhsAazeSRLX1NHzf+iVJSmOktaxFxChXcEsKHD\nnDa16AOQkGHgb6qa2vhV6Jp3aar8R4hh2rpuwAFda8DC+UVbyP35tTImRTgwDPgv\nJTFnJwhFRl3My/2OF9k+JGuDpi/A7GBl0BXv7mr9OdCNHEBtCGk4EfkeMoOCbd1c\nm5AVb+eLdAQfZgpt3V+3M0iiGNcOShm6b1N/F1t0ywHKGzIzb9o9Z23Q66nfsxxB\nXZ5GoAcOtvF1cHdsDFpxdw9oAIZ9eC9/JXq4hqVhVeZi2DXgYKGKZyVoaetMd6qz\n9m9VY4I5AgMBAAECggEASOct1WC35x3eS9lsnP79TUmkg0WjULRyPYxp/DGfI6gm\nSoGyIvXRK8jaFvPd6AlmbDVMIw34xvj6wmLF46KU8vTW51uNNFAmJk2f7ID58QP9\nMBwSgJlaGm8upyMKhMdNpgWM4BQNbOu/ZsKEQMbcgohKCu2KcGnk5QxoJTyEpYY0\ndxoA+WqP9PleO1nqQcIOndL20LhExKIqFh9Xwwq6/1baF2XDKE8M+6P/yS2rLbEs\nxJ8NeVl13SMVPQZPabLWuPEO+pkyhnNE9c6qmSlu2EJ3Li2CsfzZpxskCpsS7exp\n+YPlE6iRiA6GQjgYqYeBEj9Ol+A/DNhLSbEpzZ9LYQKBgQDVLi3+SiVO9++7B/sl\nZ/gox6uTApGhrwDlQDh4p5DFcG4mqB75Uf8XlO/QGPEvd4evYrkpFs4sPB7f+41W\nyp80xXup3X5L0dLAWZlfWox8dJL+xlb5PIsfNOfQME10PoiIEjKKwo3XtKKUW+f/\nqG2euviI6FMeLxbOnU7zBNGsNwKBgQCqJvFKdQyD8Uwf7kLkgx4YuA5MFc4HFIrM\nzefvoR0JnQsjYsAIUR3U5fIeurv/ka9yf3bdBv7pNDtEfGmvjvCXC6Gbp89qkYHE\nmuifjbk6TAZQNjNMgfyt0HmKXU0tBcn/sJ/cpnyuc6tgefvZ42d7W10c9koCZt+N\nit4+EfFtDwKBgBYwAT93Lhzi90OLGBuTj6OG7JeXa9rdIQW7QmVkY0/5XK2PT/H5\nE8i7ip4pCmk7Upbxen4JTpoSA9CiGNrQqfNPHojWcb+obfvxF2JyRS7q3yW/NOwp\n3fz4f6wOavFPVNx8sF/60dKCjW1Nh373Y7likl2FeKkqk4AbpUzr0nrPAoGARJyd\ncfPPDylvE/Uk3jaNHVSi10V3pd0/tyRUoYlrRyQfiK5aV0A2clIjFwcfpgfeIqKJ\nkMkwY2NfftdYWqWeGJplGXpKpmN0W45HvYcNqRdc+F1SxEgqVwCY8hV7eGs8MDHN\n1NEBt+sGsUmfKBaN9O07l+EsqNlIzi+wPIFJxDsCgYEAorwFZYJqKMZwAlB0NjI+\nIXHmgPGw1i+RT8lb9YQlkUec0cBTN7lwc8eCq7ZN9DfZm5uAd+OSUz4aXrTNWvgA\nVwtdlI+6rhhXpFkjrz9SQNZOI2i8Z810kxQsLXrCnwoEPVAzGMsjyKvsgy4BvYkD\nwbIJch2C46rQmcoSFIv3sMo=\n-----END PRIVATE KEY-----\n",
+  "client_email": "prosperadigital@getgsheet.iam.gserviceaccount.com",
+  "client_id": "116351691766657906855",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://accounts.google.com/o/oauth2/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/prosperadigital%40getgsheet.iam.gserviceaccount.com"
+}

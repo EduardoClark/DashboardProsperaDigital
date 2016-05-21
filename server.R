@@ -58,10 +58,59 @@ shinyServer(function(input, output) {
       )
       template_usuarios(args)
   })
+  
+##Mensajes
+  output$mensajes <- renderUI({
+    args <- list(
+      Mensajes = prettyNum(pre_pars['Mensajes'],big.mark=",",scientific=FALSE),
+      MensajesTelcel = prettyNum(pre_pars['Telcel'],big.mark=",",scientific=FALSE),
+      PromedioMensajes = prettyNum(pre_pars['PromedioMensajes'],big.mark=",",scientific=FALSE),
+      Enviados = prettyNum(pre_pars['Enviados'],big.mark=",",scientific=FALSE),
+      MensajesMovistar = prettyNum(pre_pars['Movistar'],big.mark=",",scientific=FALSE),
+      PromedioMensajesDia = prettyNum(pre_pars['PromedioMensajesDia'],big.mark=",",scientific=FALSE),
+      Recibidos = prettyNum(pre_pars['Recibidos'],big.mark=",",scientific=FALSE),
+      MensajesOtros = prettyNum(pre_pars['Otros canales'],big.mark=",",scientific=FALSE),
+      MensajesUltimaSemana = prettyNum(pre_pars['MensajesUltimaSemana'],big.mark=",",scientific=FALSE)
+    )
+    template_mensajes(args)
+  })
+  
+##Info por canal
+  output$canal <- renderUI({
+    args <- list(
+      Telcel = prettyNum(pre_pars['Telcel'],big.mark=",",scientific=FALSE),
+      UsuariosTelcel = prettyNum(pre_pars['UsuariosTelcel'],big.mark=",",scientific=FALSE),
+      PromedioMensajesTelcel = prettyNum(pre_pars['PromedioMensajesTelcel'],big.mark=",",scientific=FALSE),
+      Movistar = prettyNum(pre_pars['Movistar'],big.mark=",",scientific=FALSE),
+      UsuariosMovistar = prettyNum(pre_pars['UsuariosMovistar'],big.mark=",",scientific=FALSE),
+      PromedioMensajesMovistar = prettyNum(pre_pars['PromedioMensajesMovistar'],big.mark=",",scientific=FALSE),
+      Otroscanales = prettyNum(pre_pars['Otros canales'],big.mark=",",scientific=FALSE),
+      UsuariosOtroscanales = prettyNum(pre_pars['UsuariosOtroscanales'],big.mark=",",scientific=FALSE),
+      PromedioMensajesOtrosCanales = prettyNum(pre_pars['PromedioMensajesOtrosCanales'],big.mark=",",scientific=FALSE)
+    )
+    template_canal(args)
+  })
+
+##Campañas
+  output$campaign <- renderUI({
+    args <- list(  RecordatoriosFlujos = prettyNum(pre_pars['RecordatorioFlujos'],big.mark=",",scientific=FALSE),
+                   RecordatoriosMensajes = prettyNum(pre_pars['RecordatorioMensajes'],big.mark=",",scientific=FALSE),
+                   RecordatoriosTasaRespuesta = pre_pars['RecordatoriosTasaRespuesta'],
+                   SenalesAlertaFlujos = prettyNum(pre_pars['SenalesAlertaFlujos'],big.mark=",",scientific=FALSE),
+                   SenalesAlertaMensajes = prettyNum(pre_pars['SenalesAlertaMensajes'],big.mark=",",scientific=FALSE),
+                   SenalesAlertaTasaRespuesta = pre_pars['SenalesAlertaTasaRespuesta'],
+                   PreventAlertaFlujos = prettyNum(pre_pars['PreventAlertaFlujos'],big.mark=",",scientific=FALSE),
+                   PreventAlertaMensajes = prettyNum(pre_pars['PreventAlertaMensajes'],big.mark=",",scientific=FALSE),
+                   PreventAlertaTasaRespuesta = pre_pars['PreventAlertaTasaRespuesta'],
+                   PlanAlertaFlujos = prettyNum(pre_pars['PlanAlertaFlujos'],big.mark=",",scientific=FALSE),
+                   PlanAlertaMensajes = prettyNum(pre_pars['PlanAlertaMensajes'],big.mark=",",scientific=FALSE),
+                   PlanAlertaTasaRespuesta = pre_pars['PlanAlertaTasaRespuesta']
+    )
+    template_campaign(args)
+    
+    
+  })  
 
   
 })
-
-
-
 
