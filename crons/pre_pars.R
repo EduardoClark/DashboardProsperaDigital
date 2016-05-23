@@ -30,7 +30,7 @@ pre_pars <- c(
   'Beneficiarias' = sum(apply(CTC[,grepl('groups', colnames(CTC))] ,1 ,test_prospera)),
   'UnidadesMedicas' = nrow(UM) - nrow(Fechas),
   'Personal' = length(get_unique_clues(CTC)[,1]),
-  'Estados' = length(get_unique_states(CTC))-1,
+  'Estados' = length(unique(UM$cl_ent_clave_clCat)),
   'Municipios' = length(unique(CLUES[CLUES$CLUES%in%get_unique_clues(CTC)[,1],'mun'])),
   'CasosMIALERTA' = length(unique(RNS[
     RNS[,"flow_name"]=="miAlerta" & RNS[,"completed"]==1,"contact"] )),
