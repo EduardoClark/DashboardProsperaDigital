@@ -82,4 +82,5 @@ pre_pars <- c(
  )
 
 save(pre_pars,file = "preLoadedObjects/pre_pars.RData")
+source("crons/zipruns.R")
 remove(list=ls())
