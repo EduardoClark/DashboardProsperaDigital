@@ -1,26 +1,12 @@
 # Translate contacts dataset processor to R from STATA
 
-rm(list=setdiff(ls(), "root"))
-
-
 # plyr BEFORE dplyr
 library(plyr)
 library(dplyr)
 library(lazyeval)
 
-
-# Set root to run report_master.py (for automatic execution using report_master.py)
-args <- commandArgs(TRUE)
-root = args[1]
-
-
 # Directory
-here = paste(root, "pProcessed/rapidpro/contacts", sep="")
-runs = paste(root, "pProcessed/rapidpro/runs", sep="")
-raw_contacts = paste(root, "pRaw/rapidpro/contacts", sep="")
-
-runs = read.csv(paste(runs, "/runs.csv", sep=""), stringsAsFactors = FALSE)
-
+runs = read.csv("data/runs.csv", stringsAsFactors = FALSE)
 
 # For miPrueba, miAlta flows and incentives, generate dummy for 'contact started/fin flow'
 # http://stackoverflow.com/questions/32194070/creating-a-column-with-replaced-values-using-mutate-and-dplyr
@@ -56,14 +42,12 @@ for (flow in c("miPrueba_siNo",
   names(runs)[names(runs)=="temp"] <- finished
 }
 
-
 # Dummy for "has activated AuxTexto"
 runs <- runs %>%
           mutate(temp = 1*(flow_name=="auxTexto")) %>%
           arrange(contact, desc(temp)) %>%
           mutate(temp = first(temp))
 names(runs)[names(runs)=="temp"] <- "auxTexto_started"
-
 
 # Get number of times she has activated auxTexto
 # This may become a general function later on...
@@ -97,13 +81,11 @@ df <- df %>%
 runs <- merge(runs, df, by="contact", all.x=TRUE)
 rm(df)
 
-
 # Get first interaction of contact with RapidPro
 runs <- runs %>%
           group_by(contact) %>%
           arrange(contact, created_on) %>%
           mutate(contact_created_on = first(created_on))
-
 
 # Get contacts' response rate (ratio of messages sent over messages sent and messages not sent)
 rRate <- runs %>%
@@ -112,8 +94,6 @@ rRate <- runs %>%
            mutate(rRate = input_ok/input) %>%
            select(contact, rRate)
 runs <- merge(runs, rRate, by="contact", all.x=TRUE)
-
-
 
 # Select vars for merge with contacts
 runs <- select(runs, auxTexto_started,
@@ -141,14 +121,10 @@ runs <- select(runs, auxTexto_started,
                      belongs_PUERPERIUM,
                      rRate)
 
-
 # Process contacts
-
-contacts <- read.csv(paste(raw_contacts, "/contacts.csv", sep=""), stringsAsFactors = FALSE)
-
+contacts <- read.csv("data/contacts.csv", stringsAsFactors = FALSE)
 
 # Get dummy "has future appt date"
-
 today <- paste(strftime(Sys.time(), format="%Y-%m-%d"), "T00:00:00.000Z", sep="" )
 contacts <- mutate(contacts, future_apptDate = 0)
 
@@ -212,12 +188,9 @@ vocals <- vocals %>%
 rm(df)
 
 ### Now merge with contacts
-contacts <- merge(contacts, vocals, by="urns_0", all.x=TRUE)
-
-
+contacts <- left_join(contacts, vocals)
 
 # Select columns for merge with runs
-
 contacts <- contacts %>%
               rename(contact = uuid) %>%
               select(contact,
@@ -229,20 +202,15 @@ contacts <- contacts %>%
                      starts_with("fields_pd"),
                      starts_with("fields_ext"))
 
-
 # merge (left join) contacts with runs
-
-contacts <- merge(contacts, runs, by="contact", all.x = TRUE)
+contacts <- left_join(contacts, runs)
 rm(runs)
 
-
 # Transform dataset to contact-level
-
 contacts <- distinct(contacts, contact)
 
 
 # Retrieve all miscellaneous info
-
 ## Vocales auxiliares have a recorded miAlta_endDate even when rp_isPregnant == 0
 contacts <- mutate(contacts, is_vocAux = 1*((fields_rp_ispregnant==0) & (fields_rp_mialta_enddate != "")))
 
@@ -253,9 +221,7 @@ contacts <- contacts %>%
                      miAlta_apptDate_started = ifelse(is_vocAux==1, NA, miAlta_apptDate_started),
                      miAlta_apptDate_finished = ifelse(is_vocAux==1, NA, miAlta_apptDate_finished))
 
-
 # Get number of contacts with a due date and appt date
-
 ## Get latest appt date whenever it exists
 contacts <- mutate(contacts, fields_rp_apptdate = "")
 
@@ -272,10 +238,8 @@ contacts <- contacts %>%
               mutate(has_duedate = ifelse(is_vocAux == 0, 1*(fields_rp_duedate != ""), NA)) %>%
               mutate(has_apptdate = ifelse(is_vocAux == 0, 1*(fields_rp_apptdate != ""), NA))
 
-
 # Get contacts that finished MIALTA
 contacts <- mutate(contacts, finish_alta = 1*(fields_rp_mialta_enddate != ""))
-
 
 # Get deserted info
 contacts <- contacts %>%
@@ -297,9 +261,10 @@ contacts <- contacts %>%
                      miAlta_apptDate_deserted = 1*(miAlta_dueDate_finished == 1 &
                                                  miAlta_apptDate_finished == 0 &
                                                  finish_alta == 0))
-
-write.csv(contacts,
-          paste(here, "/contacts.csv", sep=""),
+write.csv(contacts,"data/contacts.csv",
           row.names = FALSE,
           na = "",
           quote = FALSE)
+remove(list=ls())
+  
+))

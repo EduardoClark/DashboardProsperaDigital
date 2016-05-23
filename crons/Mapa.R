@@ -1,5 +1,5 @@
 ###Clinic Level Map###
-source("loadLibraries.R")
+source("AuxScripts/loadLibraries.R")
 
 states <- readOGR(dsn="./data",layer = "prueba", verbose = T)
 states@data$Color <- ifelse(states@data$PD==1,"#00cc99","#0C5F4A")
@@ -9,7 +9,7 @@ CLUES <- CLUES[,c('CLUES','CLAVE.ENTIDAD','CLAVE.MUNICIPIO')]
 CLUES$mun <- paste(CLUES$CLAVE.ENTIDAD, CLUES$CLAVE.MUNICIPIO, sep="_")
 names(UM)[21:22] <- c("lon","lat")
 HUIcon <- makeIcon(
-  iconUrl = "http://104.236.151.123:3838/DashboardProspera/assets/icono-unidad.svg",
+  iconUrl = "http://104.236.151.123:3838/ProsperaDigital/assets/icono-unidad.svg",
   iconWidth = 38, iconHeight = 95
 )
 TMP <- leaflet(states,height = "500px", width = "100%") %>% addTiles() %>%

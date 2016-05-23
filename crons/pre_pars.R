@@ -1,39 +1,46 @@
 ###Preload data###
 source("AuxScripts/loadLibraries.R")
 source("AuxScripts/aux.R")
+require(lubridate)
 
-UM <- read.csv("./CopyOfdata/ec_muestra_20160203.csv",stringsAsFactors = FALSE, fileEncoding = "Windows-1252") %>% subset(cl_treatmentArm!=0) 
-MSJ <- read.csv("./CopyOfdata/mensajes_pd_rp.csv",stringsAsFactors=F,header=T)
-CTC <- read.csv("./CopyOfdata/contacts.csv",stringsAsFactors=F,header=T)
-RNS <- read.csv("./CopyOfdata/runs.csv",,stringsAsFactors=F, header=T)
-CLUES <- read.csv("./CopyOfdata/CAT_CLUES_Febrero2016.csv",stringsAsFactors=F,header=T)
+unzip("data/data.zip",exdir = ".")
+UM <- read.csv("data/ec_muestra_20160203.csv",stringsAsFactors = FALSE, fileEncoding = "Windows-1252") %>% subset(cl_treatmentArm!=0) 
+MSJ <- read.csv("data/messages.csv",stringsAsFactors=F,header=T)
+CTC <- read.csv("data/contacts.csv",stringsAsFactors=F,header=T)
+RNS <- read.csv("data/runs.csv",,stringsAsFactors=F, header=T)
+CLUES <- read.csv("data/CAT_CLUES_Febrero2016.csv",stringsAsFactors=F,header=T)
 CLUES <- CLUES[,c('CLUES','CLAVE.ENTIDAD','CLAVE.MUNICIPIO')]
 CLUES$mun <- paste(CLUES$CLAVE.ENTIDAD, CLUES$CLAVE.MUNICIPIO, sep="_")
 MSJ$DiffDate <- as.Date(MSJ$created_on) - as.Date(MSJ$created_on[1])
-Canal <- unique(MSJ[,c(3,6)]) 
+Canal <- unique(MSJ[,c(15,10)]) 
 Canal <- Canal %>% group_by(relayer) %>% dplyr::summarise(Usuarios=n())
 Canal <- filter(Canal,is.na(relayer)==FALSE)
-RNS$Completo <- ifelse(RNS$completed=="True",1,0)
+RNS$Completo <- ifelse(RNS$completed==1,1,0)
 Reminders <- RNS[grepl("reminders",x = RNS$flow_name)==TRUE,]
 Concerns <- RNS[grepl("concerns",x = RNS$flow_name)==TRUE,]
 Prevent <- RNS[grepl("prevent",x = RNS$flow_name)==TRUE | grepl("zika",x = RNS$flow_name)==TRUE,]
 Plan <- RNS[grepl("labor",x = RNS$flow_name)==TRUE | grepl("planning",x = RNS$flow_name)==TRUE,]
+Fechas <- read.csv("data/Edomex capacitación.csv",stringsAsFactors = FALSE) %>% 
+  mutate(Fecha=dmy(FECHA.DE.CAPACITACIÓN)) %>% mutate(Fecha = Fecha - Sys.Date()) %>% 
+  filter(Fecha>0)
+MIALERTA <- RNS[RNS$flow_name=="miAlerta",]
+MICITA <- RNS[RNS$flow_name=="miCita_bf1" | RNS$flow_name=="miCita_cl1" ,]
 
 pre_pars <- c(
   'Beneficiarias' = sum(apply(CTC[,grepl('groups', colnames(CTC))] ,1 ,test_prospera)),
-  'UnidadesMedicas' = length(get_unique_clues(CTC)[,1]),
+  'UnidadesMedicas' = nrow(UM) - nrow(Fechas),
   'Personal' = length(get_unique_clues(CTC)[,1]),
   'Estados' = length(get_unique_states(CTC))-1,
   'Municipios' = length(unique(CLUES[CLUES$CLUES%in%get_unique_clues(CTC)[,1],'mun'])),
   'CasosMIALERTA' = length(unique(RNS[
-    RNS[,"flow_name"]=="miAlerta" & RNS[,"completed"]=="True","contact"] )),
+    RNS[,"flow_name"]=="miAlerta" & RNS[,"completed"]==1,"contact"] )),
   'CambiosMICITA' = length(unique(RNS[
-    grepl("miCita_bf",RNS[,"flow_name"]) & RNS[,"completed"]=="True","contact"] )),
+    grepl("miCita_bf",RNS[,"flow_name"]) & RNS[,"completed"]==1,"contact"] )),
   'Usuarios' = nrow(CTC),
   'Mensajes' = nrow(MSJ),
   'Enviados' = nrow(MSJ[MSJ$direction=='O',]),
   'UnidadesMedicas2' =nrow(UM),
-  'tasaerror' = sprintf("%i%%",floor(100 - (100*sum(RNS[,"completed"]=="False")/nrow(RNS)))),
+  'tasaerror' = sprintf("%i%%",floor(100 - (100*sum(RNS[,"completed"]==0)/nrow(RNS)))),
   'Recibidos' =nrow(MSJ[MSJ$direction=='I',]),
   'PoblacionAbierta' = nrow(CTC)-sum(apply(CTC[,grepl('groups', colnames(CTC))] ,1 ,test_prospera)),
   'ConbebeTotal' = sprintf("%i%%",floor(100*get_conbebe(CTC,prospera=FALSE)/nrow(CTC))),
@@ -41,7 +48,7 @@ pre_pars <- c(
   'ConbebeAbierto' = sprintf("%i%%",floor(100*(get_conbebe(CTC,prospera=FALSE)-get_conbebe(CTC,prospera=TRUE))/(nrow(CTC)-sum(apply(CTC[,grepl('groups', colnames(CTC))] ,1 ,test_prospera))))),
   'Auxiliares' = get_aux(CTC), 
   'Vocales' = get_vocal(CTC),
-  'PorcentajeClinicas' = round(length(get_unique_clues(CTC)[,1]) / nrow(UM) * 100,1),
+  'PorcentajeClinicas' = round((nrow(UM) - nrow(Fechas)) / nrow(UM) * 100,1),
   'Telcel' = nrow(MSJ[MSJ$relayer=="1733",]),
   'Movistar' = nrow(MSJ[MSJ$relayer=="1493",]),
   'Otros canales' = nrow(MSJ) - nrow(MSJ[MSJ$relayer=="1493",]) - nrow(MSJ[MSJ$relayer=="1733",]),
@@ -65,7 +72,13 @@ pre_pars <- c(
   'PreventAlertaTasaRespuesta' = paste(round(mean(Prevent$Completo,na.rm = TRUE) *100,1),"%",sep=""),
   'PlanAlertaFlujos' = nrow(Plan[Plan$order==1,]),
   'PlanAlertaMensajes' = nrow(Plan),
-  'PlanAlertaTasaRespuesta' = paste(round(mean(Plan$Completo,na.rm = TRUE) *100,1),"%",sep="")
+  'PlanAlertaTasaRespuesta' = paste(round(mean(Plan$Completo,na.rm = TRUE) *100,1),"%",sep=""),
+  'MiAlertaDetonaciones' = nrow(MIALERTA[MIALERTA$order==1,]),
+  'MiAlertaCompleto' = nrow(MIALERTA[MIALERTA$order==1 & MIALERTA$completed==1,]),
+  'MiAlertaUsuarias' = length(unique(MIALERTA$urns_0)),
+  'MiCitaDetonaciones' = nrow(MICITA[MICITA$order==1,]),
+  'MiCitataCompleto' = nrow(MICITA[MICITA$order==1 & MICITA$completed==1,]),
+  'MiCitaUsuarias' = length(unique(MICITA$urns_0))
  )
 
 save(pre_pars,file = "preLoadedObjects/pre_pars.RData")

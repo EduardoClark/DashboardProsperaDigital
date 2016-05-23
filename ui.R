@@ -21,10 +21,11 @@ htmlTemplate("template.html",
     tabPanel(HTML(span_hr_template('Total de Mensajes')), htmlOutput("mensajes")),
     tabPanel(HTML(span_hr_template('Operadores')), htmlOutput("canal")),
     tabPanel(HTML(span_hr_template('Campañas')), htmlOutput("campaign")),
-    tabPanel(HTML(span_hr_template('Desertores'))),
-    tabPanel(HTML(span_hr_template('Tasa de error por pregunta'))),
-    tabPanel(HTML(span_hr_template('MIALARMA'))),
-    tabPanel(HTML(span_hr_template('MICITA')))
+    tabPanel(HTML(span_hr_template('MIALARMA')), htmlOutput("alarma")),
+    tabPanel(HTML(span_hr_template('MICITA')), htmlOutput("cita"))
+    # ,
+    # tabPanel(HTML(span_hr_template('Tasa de error por pregunta'))),
+    # tabPanel(HTML(span_hr_template('Desertores')))
   ),
   
   navbar2 = navbarPage(tabPanel(HTML("&nbsp;&nbsp;Nacion")),
@@ -36,8 +37,6 @@ htmlTemplate("template.html",
   ),
   
   mymap = leafletOutput("mapaprueba")
-  
- 
   
 )
 

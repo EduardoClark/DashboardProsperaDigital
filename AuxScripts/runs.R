@@ -2,52 +2,24 @@
 library(plyr)
 library(dplyr)
 
-# Directory
-here = paste(root, "pProcessed/rapidpro/runs", sep="")
-runs_path = paste(root, "pRaw/rapidpro/runs/runs.csv", sep="")
-contacts_path = paste(root, "pRaw/rapidpro/contacts/contacts.csv", sep="")
-
-# Call master raw runs .csv
-runs = read.csv((runs_path), stringsAsFactors = FALSE)
-
-
-
-# Keep those runs that started after december 7, 2015
-runs <- filter(runs, created_on >= "2015-12-07T23:59:59.999Z")
-
-
-
-# There is a row without a run (maybe remove this after get.py debug)
-runs <- filter(runs, !is.na(run))
-
-
-# Drop all runs in flow ALTA (Ale Rogel & Co. had to do this)
-runs <- filter(runs, flow_name != "TelcelConfirm")
-
+# Read runs Keep those runs that started after december 7, 2015, drop NAs and remove ALTA flows
+runs <- read.csv("data/runs.csv", stringsAsFactors = FALSE) %>% 
+  filter(created_on >= "2015-12-07T23:59:59.999Z") %>%
+  filter(!is.na(run)) %>% filter(flow_name != "TelcelConfirm")
 
 # Drop administrators
-
-contacts <- read.csv(contacts_path)
-contacts <- contacts %>%
+contacts <- read.csv("data/contacts.csv",stringsAsFactors = FALSE) %>%
               select(urns_0, uuid) %>%
               rename(contact = uuid)
 
-runs <- merge(runs, contacts, by="contact", all.x=TRUE)
-rm(contacts)
-
-runs <- filter(runs, (urns_0 != "tel:+525518800285") &
+runs <- left_join(runs, contacts) %>% filter((urns_0 != "tel:+525518800285") &
                      (urns_0 != "tel:+525571852348") &
                      (urns_0 != "tel:+525517692828"))
 
-
-
 # Recode completion dummy
-runs <- mutate(runs, completed = mapvalues(completed, c("True", "False"), c("1", "0")))
-runs$completed = as.numeric(runs$completed)
+runs <- runs %>% mutate(completed = mapvalues(completed, c("True", "False"), c("1", "0"))) %>%
+  mutate(completed=as.numeric(completed))
 
-
-
-# Extend response type and label to nodes (R is cool! (and free))
 ## group by step
 ## sort to get non-missing response-type first within group
 ## group by group, replace response_type (label) with first val in group
@@ -59,7 +31,6 @@ runs <- runs %>%
                   label = first(label) ) %>%
           ungroup()
 
-
 # Tag interactive flows
 runs <- runs %>%
           group_by(flow_uuid) %>%
@@ -67,13 +38,13 @@ runs <- runs %>%
           mutate(flow_interactive = 1*(first(origin) == "values")) %>%
           ungroup()
 
-
 # Generate "flow contains date variable" dummy
 has_date <- runs %>%
               filter(response_type == "f") %>%
               distinct(flow_uuid) %>%
               mutate(flow_has_date = 1) %>%
               select(flow_uuid, flow_has_date)
+
 runs <- runs %>%
           merge(has_date, by="flow_uuid", all.x=TRUE) %>%
           mutate(flow_has_date = ifelse(is.na(flow_has_date), 0, flow_has_date))
@@ -82,7 +53,6 @@ rm(has_date)
 
 
 # Add dummy for "contact belongs to pregnant/puerperium messages"
-
 belongs_to <- function(df, group) {
   # Adds dummy col to df with 1{belongs to group}
   # df is a data.frame, group is a string
@@ -107,7 +77,7 @@ belongs_to <- function(df, group) {
   return(df)
 }
 
-contacts <- read.csv(contacts_path)
+contacts <- read.csv("data/contacts.csv",stringsAsFactors = FALSE)
 contacts <- contacts %>%
               rename(contact = uuid)
               select(contacts, contact,
@@ -128,8 +98,7 @@ contacts <- contacts %>%
                      belongs_PREGNANT,
                      belongs_PUERPERIUM)
 
-runs <- merge(runs, contacts, on="contact", all.x=TRUE)
-
+runs <- left_join(runs, contacts)
 
 # Tag steps that require user input
 # (and tag those that actually got that input)
@@ -139,7 +108,6 @@ runs <- runs %>%
 
 
 # Tag flows by campaign
-
 flows <- runs %>%
            select(flow_uuid,
                   flow_name) %>%
@@ -176,20 +144,17 @@ for (i in c(1:4, "_init", "_pick")) {
 }
 flows <- within(flows, flow_campaign[flow_name == "labor_toPuerperium"] <- "Labor")
 
-
 ## Planning
 for (i in 1:7) {
   flow <- paste("prePiloto_planning", as.character(i), sep="")
   flows <- within(flows, flow_campaign[flow_name == flow] <- "Planning")
 }
 
-
 ## Preventative
 for (i in 1:15) {
   flow <- paste("prevent", as.character(i), sep="")
   flows <- within(flows, flow_campaign[flow_name == flow] <- "Preventative")
 }
-
 
 ## Puerperium
 for (w in 1:13) {
@@ -235,8 +200,6 @@ flows <- select(flows, flow_uuid,
 
 runs <- merge(runs, flows, by="flow_uuid", all.x=TRUE)
 
-
-
 # Generate categorical var for choice taken in flow auxTexto
 # The node in which the decision is made is be0126ac-18fd-421b-8b11-b305ee9bf818
 # NOTE: groups of contacts associated to vocales were reformulated on 09/04/2016
@@ -246,8 +209,6 @@ runs <- mutate(runs, auxTexto_decision = ifelse((node == "be0126ac-18fd-421b-8b1
                                                 (created_on > "2016-03-23T23:59:59.999Z") &
                                                 (completed == 1),
                                                 category_spa, ""))
-
-
 
 # Analyze incentivesCollect flows
 incentives <- runs %>%
@@ -261,7 +222,6 @@ incentives <- runs %>%
                        run,
                        label)
 
-
 # Get questions
 
 # Generate a new df with labels that start with "split.."
@@ -271,7 +231,7 @@ df_inc_q <- filter(incentives, (substr(label, 1, 5) == "split") &
 
 df_inc_q <- df_inc_q %>%
 
-  # Save question 1 (2) to category_spa if it label equals "split_rand_1_8"
+# Save question 1 (2) to category_spa if it label equals "split_rand_1_8"
   mutate(inc_q1 = ifelse(label == "split_rand_1_8", strtoi(category_spa), NA),
          inc_q2 = ifelse(label == "split_rand_1_6", strtoi(category_spa), NA)) %>%
   
@@ -333,5 +293,5 @@ rm(df_inc_r, df_inc_q, incentives)
 # Extract answers to concerns questions
 #concerns <- filter(runs, )
 
-
-write.csv(runs, paste(here, "/runs.csv", sep=""))
+write.csv(runs, "data/runs.csv")
+remove(list=ls())

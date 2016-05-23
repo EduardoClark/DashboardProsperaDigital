@@ -25,7 +25,7 @@ shinyServer(function(input, output) {
                      Beneficiarias = prettyNum(pre_pars['Beneficiarias'],big.mark=",",scientific=FALSE),
                      Enviados = prettyNum(pre_pars['Enviados'],big.mark=",",scientific=FALSE),
                      CambiosMICITA = prettyNum(pre_pars['CambiosMICITA'],big.mark=",",scientific=FALSE),
-                     UnidadesMedicas = prettyNum(pre_pars['UnidadesMedicas2']),
+                     UnidadesMedicas = prettyNum(pre_pars['UnidadesMedicas']),
                      Personal = prettyNum(pre_pars['Personal'],big.mark=",",scientific=FALSE),
                      Recibidos = prettyNum(pre_pars['Recibidos'],big.mark=",",scientific=FALSE),
                      Tasadeerror = pre_pars['tasaerror']
@@ -107,9 +107,28 @@ shinyServer(function(input, output) {
                    PlanAlertaTasaRespuesta = pre_pars['PlanAlertaTasaRespuesta']
     )
     template_campaign(args)
-    
-    
   })  
+  
+  
+##MiAlarma
+  output$alarma <- renderUI({
+    arg_list <- list( 
+      AlertaDetonaciones = prettyNum(pre_pars['MiAlertaDetonaciones']),
+      AlertaCompleto = prettyNum(pre_pars['MiAlertaCompleto'],big.mark=",",scientific=FALSE),
+      AlertaUsuarias = prettyNum(pre_pars['MiAlertaUsuarias'],big.mark=",",scientific=FALSE)
+    )
+    template_alerta(arg_list)
+  })
+  
+##MiCita
+  output$cita <- renderUI({
+    arg_list <- list( 
+      CitaDetonaciones = prettyNum(pre_pars['MiCitaDetonaciones']),
+      CitaCompleto = prettyNum(pre_pars['MiCitataCompleto'],big.mark=",",scientific=FALSE),
+      CitaUsuarias = prettyNum(pre_pars['MiCitaUsuarias' ],big.mark=",",scientific=FALSE)
+    )
+    template_cita(arg_list)
+  })
 
   
 })
