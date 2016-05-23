@@ -437,3 +437,70 @@ template_campaign <- function(arg_list){
   
 }
 
+template_alerta <- function(arg_list){
+  
+  AlertaDetonaciones <- arg_list$AlertaDetonaciones
+  AlertaCompleto <- arg_list$AlertaCompleto
+  AlertaUsuarias <- arg_list$AlertaUsuarias
+  
+  html_ <- tags$div(
+    class = "container",
+    style = "margin-top:-10px",
+    tags$div(
+      class = "column-left", 
+      style = "text-align:left;width: 50%;",
+      tags$span(
+        style=span_style ,
+        AlertaDetonaciones
+      ),
+      tags$br("Detonaciones de MIALERTA",tags$br(),tags$br()),
+      tags$span(
+        style=span_style ,
+        AlertaCompleto
+      ),
+      tags$br("Flujos MIALERTA Completados",tags$br(),tags$br()),
+      tags$span(
+        style=span_style ,
+        AlertaUsuarias
+      ),
+      tags$br("Usuarias de MIALERTA")
+    )
+  )
+  
+  return(html_)
+  
+}
+
+template_cita <- function(arg_list){
+  
+  CitaDetonaciones <- arg_list$CitaDetonaciones
+  CitaCompleto <- arg_list$CitaCompleto
+  CitaUsuarias <- arg_list$CitaUsuarias
+  
+  html_ <- tags$div(
+    class = "container",
+    style = "margin-top:-10px",
+    tags$div(
+      class = "column-left", 
+      style = "text-align:left;width: 50%;",
+      tags$span(
+        style=span_style ,
+        CitaDetonaciones
+      ),
+      tags$br("Detonaciones de MICITA",tags$br(),tags$br()),
+      tags$span(
+        style=span_style ,
+        CitaCompleto
+      ),
+      tags$br("Flujos MICITA Completados",tags$br(),tags$br()),
+      tags$span(
+        style=span_style ,
+        CitaUsuarias
+      ),
+      tags$br("Usuarias de MICITA")
+    )
+  )
+  
+  return(html_)
+  
+}
