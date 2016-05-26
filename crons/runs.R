@@ -1,3 +1,5 @@
+#!/usr/bin/env Rscript
+setwd('/srv/shiny-server/ProsperaDigital')
 # Translate runs dataset processor to R from STATA
 library(plyr)
 library(dplyr)
@@ -72,7 +74,7 @@ belongs_to <- function(df, group) {
   df <- within(df, belongs[groups_8==group] <- 1)
   df <- within(df, belongs[groups_9==group] <- 1)
   df <- within(df, belongs[groups_10==group] <- 1)
-  df <- within(df, belongs[groups_11==group] <- 1)
+  #df <- within(df, belongs[groups_11==group] <- 1)
   
   return(df)
 }
