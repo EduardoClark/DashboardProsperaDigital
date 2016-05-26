@@ -1,5 +1,5 @@
 #!/usr/bin/env Rscript
-setwd('/srv/shiny-server/ProsperaDigital')
+setwd('/srv/shiny-server/ProsperaDigital/')
 
 # Translate contacts dataset processor to R from STATA
 
@@ -166,7 +166,7 @@ test <- contacts %>%
 
 ### Get every contact's associated vocal
 contacts <- mutate(contacts, vocal=NA)
-for (num in 0:10) {
+for (num in 0:11) {
   group <- paste("groups_", num, sep="")
   contacts <- contacts %>%
                 mutate_(vocal = interp(~ ifelse(grepl("tel", group), group, vocal),
