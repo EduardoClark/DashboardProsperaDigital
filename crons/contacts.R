@@ -1,5 +1,5 @@
 #!/usr/bin/env Rscript
-setwd('/srv/shiny-server/ProsperaDigital/')
+setwd('/srv/shiny-server/ProsperaDigital')
 
 # Translate contacts dataset processor to R from STATA
 

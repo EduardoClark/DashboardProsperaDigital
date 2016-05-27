@@ -1,5 +1,5 @@
 #!/usr/bin/env Rscript
-setwd('/srv/shiny-server/ProsperaDigital/')
+setwd('/srv/shiny-server/ProsperaDigital')
 ###Preload data###
 source("AuxScripts/loadLibraries.R")
 source("AuxScripts/aux.R")
