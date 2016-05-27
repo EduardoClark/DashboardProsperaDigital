@@ -14,7 +14,7 @@ CLUES <- read.csv("data/CAT_CLUES_Febrero2016.csv",stringsAsFactors=F,header=T)
 CLUES <- CLUES[,c('CLUES','CLAVE.ENTIDAD','CLAVE.MUNICIPIO')]
 CLUES$mun <- paste(CLUES$CLAVE.ENTIDAD, CLUES$CLAVE.MUNICIPIO, sep="_")
 MSJ$DiffDate <- as.Date(MSJ$created_on) - as.Date(MSJ$created_on[1])
-Canal <- unique(MSJ[,c(15,10)]) 
+Canal <- unique(MSJ[,c(13,8)]) 
 Canal <- Canal %>% group_by(relayer) %>% dplyr::summarise(Usuarios=n())
 Canal <- filter(Canal,is.na(relayer)==FALSE)
 RNS$Completo <- ifelse(RNS$completed==1,1,0)
