@@ -1,3 +1,6 @@
+#!/usr/bin/env Rscript
+setwd('/srv/shiny-server/ProsperaDigital')
+
 # Translate contacts dataset processor to R from STATA
 
 # plyr BEFORE dplyr
@@ -267,4 +270,3 @@ write.csv(contacts,"data/contacts.csv",
           quote = FALSE)
 remove(list=ls())
   
-))

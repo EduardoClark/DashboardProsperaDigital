@@ -1,3 +1,5 @@
+#!/usr/bin/env Rscript
+setwd('/srv/shiny-server/ProsperaDigital')
 # Translate runs dataset processor to R from STATA
 library(plyr)
 library(dplyr)

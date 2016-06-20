@@ -1,4 +1,5 @@
-###Clinic Level Map###
+#!/usr/bin/env Rscript
+setwd('/srv/shiny-server/ProsperaDigital')###Clinic Level Map###
 source("AuxScripts/loadLibraries.R")
 unzip("data/data.zip",exdir = ".")
 
